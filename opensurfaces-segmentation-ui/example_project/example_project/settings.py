@@ -24,7 +24,7 @@ DATABASES = {
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'US/Eastern'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -56,7 +56,8 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/sbell/opensurfaces-segmentation-ui/static/'
+#STATIC_ROOT = '/home/sbell/opensurfaces-segmentation-ui/static/'
+STATIC_ROOT = '/Users/jason/s/phenotyping/opensurfaces-segmentation-ui/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -79,7 +80,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'a35f3&amp;!fba)!azbml5#5j67%o6us97zo*_hwlo#k5=o8g^d8v^'
+SECRET_KEY = 'kjf(*8jflkjsfj893fjlkasdflkjlf3jj0jfwnvn,xaefpe-lkjs00'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -155,7 +156,7 @@ LOGGING = {
 }
 
 # Django Compressor
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = False
 COMPRESS_OUTPUT_DIR = 'cache'
 COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --bare --compile --stdio'),
