@@ -156,9 +156,29 @@ LOGGING = {
 }
 
 # Django Compressor
-COMPRESS_ENABLED = False
+COMPRESS_ENABLED = True
 COMPRESS_OUTPUT_DIR = 'cache'
 COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --bare --compile --stdio'),
     ('text/less', 'lessc -x {infile} {outfile}'),
 )
+
+
+
+
+# JBY: Hacked together loading of stuff
+print 'IN SETTINGS'
+import sys
+import os
+print sys.argv
+print os.environ['leaflabeler_infile']
+
+print 'Defined?', 'old_thing' in locals() or 'old_thing' in globals()
+old_thing = '123'
+
+#old_thing = locals().get('old_thing', None)
+#if old_thing == None:
+#    old_thing = 'foo'
+#    print 'setting old_thing'
+#else:
+#    print 'old_thing already set'

@@ -1,10 +1,14 @@
 import json
+import pprint
+import ipdb as pdb
 
 from ua_parser import user_agent_parser
 
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import Http404, HttpResponse
+
+from labeler import leaflabeler
 
 @ensure_csrf_cookie
 def demo(request):
@@ -44,10 +48,19 @@ def demo(request):
         }
 
     """
+
+    print 'On this request, leaflabeler is', leaflabeler
+    
     # replace this with a fetch from your database
     if request.method == 'POST':
         # this will return the POST data back to the client in the form of an
         # error message (so you can inspect it).
+        pp = pprint.PrettyPrinter(indent=4)
+
+        #pdb.set_trace()
+        print 'Got data:'
+        pp.pprint(request.POST.dict())
+        
         return json_error_response(
             "This is a demo.  Here is the data you submitted: " +
             json.dumps(request.POST))
@@ -65,6 +78,7 @@ def demo(request):
             return response
 
         # hard-coded example image:
+        print 'HERE'
         context = {
             # the current task
             'content': {
@@ -73,18 +87,19 @@ def demo(request):
                 # content.id is the key in a dictionary holding the polygons.
                 'id': 1,
                 # url where the photo can be fetched.
-                'url': 'http://farm9.staticflickr.com/8204/8177262167_d749ec58d9_h.jpg'
+                #'url': 'http://farm9.staticflickr.com/8204/8177262167_d749ec58d9_h.jpg'
+                'url': 'http://s.yosinski.com/example_nlb.jpg'
             },
 
             # min number of shapes before the user can submit
-            'min_shapes': 6,
+            'min_shapes': 0,
 
             # min number of vertices the user must click for each shape
-            'min_vertices': 4,
+            'min_vertices': 3,
 
             # if 'true', ask the user a feedback survey at the end and promise
             # payment to complete it.  Must be 'true' or 'false'.
-            'ask_for_feedback': 'true',
+            'ask_for_feedback': 'false',
 
             # feedback_bonus is the payment in dollars that we promise users
             # for completing feedback
