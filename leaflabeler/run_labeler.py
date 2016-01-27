@@ -17,13 +17,13 @@ def main():
     sys.path.insert(0, proj_dir)
                     
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "example_project.settings")
-    os.environ['leaflabeler_infile'] = 'foo_in'
-    os.environ['leaflabeler_outfile'] = 'foo_out'
+    os.environ['leaflabeler_infile'] = args.infile
+    os.environ['leaflabeler_outfile'] = args.outfile
 
     from django.core.management import execute_from_command_line
 
     #execute_from_command_line(sys.argv)
-    execute_from_command_line(['./foo.py', 'runserver'])
+    execute_from_command_line([sys.argv[0], 'runserver'])     # hardcode runserver command
 
 
 
