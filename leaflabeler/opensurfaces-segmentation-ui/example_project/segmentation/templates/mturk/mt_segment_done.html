@@ -1,0 +1,32 @@
+{% extends "mturk/mt_base_fixed.html" %}
+{% load humanize %}
+{% load compress %}
+
+{% block css %}{{ block.super }}
+<style>
+	canvas { border: 1px solid #969696; }
+	body { padding: 0 }
+
+
+        #content-container {
+        color: #4b4;
+        padding: 100px 0;
+        margin: 0 auto;
+        text-align: center;
+        }
+        #content-container h1 {
+        font-size: 40px;
+        }        
+        #content-container p {
+        font-size: 20px;
+        }        
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="mt-container">
+  <h1>Finished collecting labels. Thanks!</h1>
+  <p>({{ n_images }} images from {{ image_list}})</p>
+</div>
+{% endblock %}
+

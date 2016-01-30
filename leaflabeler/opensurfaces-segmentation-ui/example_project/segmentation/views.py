@@ -1,14 +1,20 @@
 import json
 import pprint
-import ipdb as pdb
+import pdb
 
 from ua_parser import user_agent_parser
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import Http404, HttpResponse
+from django.conf import settings
 
-from labeler import leaflabeler
+#from labeler import leaflabeler
+from labeler import LeafLabeler
+# Define a global leaflabeler object
+if not 'leaflabeler' in locals() or 'leaflabeler' in globals():
+    leaflabeler = LeafLabeler()
+    print 'Made leaflabeler object', leaflabeler
 
 @ensure_csrf_cookie
 def demo(request):
@@ -58,12 +64,21 @@ def demo(request):
         pp = pprint.PrettyPrinter(indent=4)
 
         #pdb.set_trace()
+        posted_data = request.POST.dict()
         print 'Got data:'
-        pp.pprint(request.POST.dict())
+        pp.pprint(posted_data)
+
+        results = json.loads(posted_data['results'])
+        print 'keys are', results.keys()
+        assert len(results.keys()) == 1, 'Expected a single image key'
+        imkey = int(results.keys()[0])
+        leaflabeler.update_label(posted_data)
+
+        leaflabeler.write_to_file()
         
-        return json_error_response(
-            "This is a demo.  Here is the data you submitted: " +
-            json.dumps(request.POST))
+        #return json_error_response(
+        #    "This is a demo.  Here is the data you submitted: " +
+        #    json.dumps(request.POST))
 
         # to instead signal that the data was properly submitted, return a JSON
         # object indicating success (see below commented line).  The client
@@ -71,24 +86,31 @@ def demo(request):
         # See segmentation/static/jss/mturk/mt_submit.coffee (search for
         # window.location) for the code that does this on the client side.
 
-        #return json_success_response()
+        return json_success_response()
     else:
         response = browser_check(request)
         if response:
             return response
 
         # hard-coded example image:
-        print 'HERE'
+        iminfo = leaflabeler.get_next_image()
+        #print 'Next image', iminfo
+        if iminfo == None:
+            return redirect('done')
+        else:
+            imkey, imname = iminfo
+            
         context = {
             # the current task
             'content': {
                 # the database ID of the photo.  You can leave this at 1 if you
                 # don't use a database.  When the results are submitted, the
                 # content.id is the key in a dictionary holding the polygons.
-                'id': 1,
+                'id': imkey,
                 # url where the photo can be fetched.
                 #'url': 'http://farm9.staticflickr.com/8204/8177262167_d749ec58d9_h.jpg'
-                'url': 'http://s.yosinski.com/example_nlb.jpg'
+                #'url': 'http://s.yosinski.com/example_nlb.jpg'
+                'url': settings.MEDIA_URL + imname
             },
 
             # min number of shapes before the user can submit
@@ -109,8 +131,18 @@ def demo(request):
             'instructions': 'mturk/mt_segment_material_inst_content.html'
         }
 
-    return render(request, 'mturk/mt_segment_material.html', context)
+    rendered = render(request, 'mturk/mt_segment_material.html', context)
+    #print 'returning rendered'
+    return rendered
 
+@ensure_csrf_cookie
+def done(request):
+    context = {
+        'n_images': leaflabeler.n_images,
+        'image_list': leaflabeler.image_list,
+    }
+    return render(request, 'mturk/mt_segment_done.html', context)
+    
 
 def browser_check(request):
     """ Only allow firefox and chrome, and no mobile """

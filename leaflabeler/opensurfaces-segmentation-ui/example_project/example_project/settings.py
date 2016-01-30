@@ -45,19 +45,24 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
+import os
 MEDIA_ROOT = ''
+if 'leaflabeler_image_dir' in os.environ:
+    MEDIA_ROOT = os.path.join(os.getcwd(), os.environ['leaflabeler_image_dir'])
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 #STATIC_ROOT = '/home/sbell/opensurfaces-segmentation-ui/static/'
-STATIC_ROOT = '/Users/jason/s/phenotyping/opensurfaces-segmentation-ui/static/'
+#STATIC_ROOT = '/Users/jason/s/phenotyping/opensurfaces-segmentation-ui/static/'
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)), '..', '..', 'static')
+print 'STATIC_ROOT is', STATIC_ROOT
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -70,7 +75,7 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-# List of finder classes that know how to find static files in
+# List of finder classes that know how to find static
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -165,16 +170,15 @@ COMPRESS_PRECOMPILERS = (
 
 
 
-
 # JBY: Hacked together loading of stuff
 print 'IN SETTINGS'
 import sys
 import os
-print sys.argv
-print os.environ['leaflabeler_infile']
+#print sys.argv
+#print os.environ['leaflabeler_infile']
 
-print 'Defined?', 'old_thing' in locals() or 'old_thing' in globals()
-old_thing = '123'
+#print 'Defined?', 'old_thing' in locals() or 'old_thing' in globals()
+#old_thing = '123'
 
 #old_thing = locals().get('old_thing', None)
 #if old_thing == None:

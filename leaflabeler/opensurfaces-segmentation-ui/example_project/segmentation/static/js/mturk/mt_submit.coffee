@@ -102,7 +102,8 @@ $( ->
         if data.result == "success"
           new_url = "#{host}/mturk/externalSubmit#{window.location.search}"
           console.log "success: redirecting to #{new_url}"
-          window.location = new_url
+          #window.location = new_url
+          window.location = window.location.href
           setInterval((-> window.location = new_url), 5000)
         else if data.result == "error"
           mt_submit_error("There was an error contacting the server; try submitting again after a few seconds... (#{data.message})")
