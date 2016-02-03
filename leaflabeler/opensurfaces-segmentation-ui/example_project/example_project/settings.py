@@ -1,5 +1,7 @@
 # Django settings for example_project project.
 
+import os
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -45,7 +47,6 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-import os
 MEDIA_ROOT = ''
 if 'leaflabeler_image_dir' in os.environ:
     MEDIA_ROOT = os.path.join(os.getcwd(), os.environ['leaflabeler_image_dir'])
@@ -62,7 +63,7 @@ MEDIA_URL = '/media/'
 #STATIC_ROOT = '/home/sbell/opensurfaces-segmentation-ui/static/'
 #STATIC_ROOT = '/Users/jason/s/phenotyping/opensurfaces-segmentation-ui/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)), '..', '..', 'static')
-print 'STATIC_ROOT is', STATIC_ROOT
+#print 'STATIC_ROOT is', STATIC_ROOT
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -167,22 +168,3 @@ COMPRESS_PRECOMPILERS = (
     ('text/coffeescript', 'coffee --bare --compile --stdio'),
     ('text/less', 'lessc -x {infile} {outfile}'),
 )
-
-
-
-# JBY: Hacked together loading of stuff
-print 'IN SETTINGS'
-import sys
-import os
-#print sys.argv
-#print os.environ['leaflabeler_infile']
-
-#print 'Defined?', 'old_thing' in locals() or 'old_thing' in globals()
-#old_thing = '123'
-
-#old_thing = locals().get('old_thing', None)
-#if old_thing == None:
-#    old_thing = 'foo'
-#    print 'setting old_thing'
-#else:
-#    print 'old_thing already set'

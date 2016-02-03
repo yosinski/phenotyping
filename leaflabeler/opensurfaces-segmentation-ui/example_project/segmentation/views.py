@@ -9,15 +9,24 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import Http404, HttpResponse
 from django.conf import settings
 
-#from labeler import leaflabeler
+from .forms import LabelerIDForm
+
 from labeler import LeafLabeler
 # Define a global leaflabeler object
 if not 'leaflabeler' in locals() or 'leaflabeler' in globals():
     leaflabeler = LeafLabeler()
-    print 'Made leaflabeler object', leaflabeler
+
+
+def check_stage_and_redirect(current_page_stage = None):
+    current_stage = leaflabeler.get_stage()
+    #print 'current_stage is', current_stage, 'on page', current_page_stage
+    
+    if current_page_stage != current_stage:
+        return redirect(current_stage)
+
 
 @ensure_csrf_cookie
-def demo(request):
+def label(request):
     """
     Serve up a segmentation task.
 
@@ -55,7 +64,9 @@ def demo(request):
 
     """
 
-    print 'On this request, leaflabeler is', leaflabeler
+    #print 'On this request, leaflabeler is', leaflabeler
+    redir = check_stage_and_redirect('label')
+    if redir: return redir
     
     # replace this with a fetch from your database
     if request.method == 'POST':
@@ -63,13 +74,12 @@ def demo(request):
         # error message (so you can inspect it).
         pp = pprint.PrettyPrinter(indent=4)
 
-        #pdb.set_trace()
         posted_data = request.POST.dict()
-        print 'Got data:'
-        pp.pprint(posted_data)
+        #print 'Got data:'
+        #pp.pprint(posted_data)
 
         results = json.loads(posted_data['results'])
-        print 'keys are', results.keys()
+        #print 'keys are', results.keys()
         assert len(results.keys()) == 1, 'Expected a single image key'
         imkey = int(results.keys()[0])
         leaflabeler.update_label(posted_data)
@@ -135,8 +145,32 @@ def demo(request):
     #print 'returning rendered'
     return rendered
 
+    
+@ensure_csrf_cookie
+def start(request):
+    redir = check_stage_and_redirect('start')
+    if redir: return redir
+    
+    if request.method == 'POST':
+        form = LabelerIDForm(request.POST)
+
+        if form.is_valid():
+            leaflabeler.update_labeler_id(form.cleaned_data['labeler_id'])
+
+            # Start labeling now
+            return redirect('label')
+
+    else:
+        form = LabelerIDForm()
+
+    return render(request, 'mturk/mt_segment_start.html', {'form': form})
+
+
 @ensure_csrf_cookie
 def done(request):
+    redir = check_stage_and_redirect('done')
+    if redir: return redir
+
     context = {
         'n_images': leaflabeler.n_images,
         'image_list': leaflabeler.image_list,

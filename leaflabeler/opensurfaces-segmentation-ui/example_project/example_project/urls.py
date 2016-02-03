@@ -7,8 +7,9 @@ from django.conf import settings
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$',      'segmentation.views.demo', name='demo'),
-    url(r'^done/$', 'segmentation.views.done', name='done'),
+    url(r'^$',         'segmentation.views.start', name='start'),
+    url(r'^label/$',   'segmentation.views.label', name='label'),
+    url(r'^done/$',    'segmentation.views.done',  name='done'),
 
     # Examples:
     # url(r'^$', 'example_project.views.home', name='home'),
