@@ -1,4 +1,4 @@
-This is a simple image labeling framework based on [Sean Bell](https://www.cs.cornell.edu/~sbell/)'s [opensurfaces-segmentation-ui](https://github.com/seanbell/opensurfaces-segmentation-ui).
+This is a simple web-based image labeling framework derived from [Sean Bell](https://www.cs.cornell.edu/~sbell/)'s [opensurfaces-segmentation-ui](https://github.com/seanbell/opensurfaces-segmentation-ui). The backend runs in the [Django](https://www.djangoproject.com/) framework for Python.
 
 
 # Installing the labeler
