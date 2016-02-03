@@ -1,1 +1,11 @@
-Repo for automated phenotyping code.
+# Phenotyping labeler and other code
+
+
+
+# Installing the labeler
+
+
+
+# Running the labeler
+
+
