@@ -18,7 +18,7 @@ Activation:
 
     $ . ~/virtualenvs/phenotyping/bin/activate
 
-Activation must be run in each shell in which you wish to run the lableler. Consider adding to your `~/.bashrc` to run it automatically in every shell.
+Activation must be run in each shell in which you wish to run the lableler. Consider adding the line to your `~/.bashrc` to run it automatically in every shell.
 
 Next, install the Python packages necessary for the labeler inside the virtualenv using pip:
 
@@ -26,11 +26,11 @@ Next, install the Python packages necessary for the labeler inside the virtualen
 
 That's it!
 
+
+
 # Running the labeler
 
-To run the labeler, first put all the images you're considering labeling in some directory. Here, I've put them in the `phenotyping/images` directory (but you could put them elsewhere).
-
-Next, create a text file listing the images you'd like to collect labels for, listing one image filename per line. Here's an example:
+To run the labeler, first put all the images you're considering labeling in some directory. Here, I've put them in the `phenotyping/images` directory (but you could put them in any directory you like). Next, create a text file listing the images you'd like to collect labels for, listing one image filename per line. Here's an example:
 
     $ cat images_000.txt
     nlb1.jpg
@@ -41,7 +41,7 @@ Then, run the labeler using `run_labeler.py`:
 
     $ ./run_labeler.py images collected_labels/images_001.txt collected_labels/labels_001.pkl
 
-See the script help for more information if desired:
+See the script help for more information about the arguments if desired:
 
     $ ./run_labeler.py --help
     
@@ -49,9 +49,11 @@ Basically, the three required arguments are the path to the directory containing
 
 So, assuming the labeler is running using the command above, the webserver will now be serving pages on 127.0.0.1:8000. Visit that page in your browser to begin the labeling process: [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
+
+
 # Checking out the labels
 
-The label file is just a Python dict stored in pickle format. It's easy to load, for example, via the `peek_labels.py` script:
+The labeling culminates in the creation of a label file. The label file is just a single Python dict stored in pickle format. It's easy to load, for example, via the `peek_labels.py` script:
 
     $ ./peek_labels.py collected_labels/labels_001.pkl
     File collected_labels/labels_000.pkl content summary:
@@ -64,7 +66,18 @@ The label file is just a Python dict stored in pickle format. It's easy to load,
         first label:              {u'screen_width': u'1440', u'time_ms': u'{"0":[4623,2154,2020,5889]}',
                                   u'results': u'...
 
-To output information in other formats, you can make your own script like `peek_labels.py` that does something different, like computes bounding boxes and writes them to a separate file, or samples square regions and assigns them label -1 or +1 based on their overlap with labeled polygon regions, or ...
+To see everything that is saved in the file, you can dump a complete printout using the `--all` flag, like this:
+
+    $ ./peek_labels.py --all collected_labels/labels_001.pkl
+    File collected_labels/labels_000.pkl content summary:
+      version:                    1
+    ... many more lines ...
+
+To output information in other formats, you can make your own script like `peek_labels.py` that does something different, e.g.
+
+* Compute bounding boxes and writes them to a separate file
+* Sample square regions and assigns them label -1 or +1 based on their overlap with labeled polygon regions
+* Anything else!
 
 # Possible improvements
 
