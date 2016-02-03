@@ -1,7 +1,3 @@
-# Phenotyping labeler and other code
-
-
-
 # Installing the labeler
 
 First, grab the code
@@ -9,17 +5,21 @@ First, grab the code
     $ git clone https://github.com/yosinski/phenotyping.git
     $ cd phenotyping
     
-It's easiest to run the labeler from within a Python [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/), so the packages live completely separately from the other installed packages on your system. The prevents version conflicts, etc. First install virtualenv, and then make and activate one for this project. On my system, this process looked like the following, though your setup may vary:
+It's easiest to run the labeler from within a Python [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/), so the packages live completely separately from the other installed packages on your system. The prevents version conflicts and keeps your system clean of any packages installed simply for the phenotype labeler.
+
+First install virtualenv, and then make and activate one for this project. On my system, this process looked like the following, though your setup may vary:
 
 Creation:
 
     $ mkdir -p ~/virtualenvs
     $ virtualenv ~/virtualenvs/phenotyping
 
-Activation (must be run in each shell in which you wish to run the lableler. Consider adding to your `~/.bashrc` to run it automatically in every shell).
+Activation:
 
     $ . ~/virtualenvs/phenotyping/bin/activate
-    
+
+Activation must be run in each shell in which you wish to run the lableler. Consider adding to your `~/.bashrc` to run it automatically in every shell.
+
 Next, install the Python packages necessary for the labeler inside the virtualenv using pip:
 
     $ pip install -r requirements.txt
