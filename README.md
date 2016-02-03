@@ -1,3 +1,6 @@
+This is a simple image labeling framework based on [Sean Bell](https://www.cs.cornell.edu/~sbell/)'s [opensurfaces-segmentation-ui](https://github.com/seanbell/opensurfaces-segmentation-ui).
+
+
 # Installing the labeler
 
 First, grab the code
